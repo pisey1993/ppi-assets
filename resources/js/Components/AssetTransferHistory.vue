@@ -115,9 +115,11 @@ const executeDelete = () => {
 
 // Function to print a specific transfer record
 const printTransfer = (transferId) => {
-    // Opens a new tab with a specific print route (assuming Laravel route exists)
-    window.open(`/asset-transfers/${transferId}/print`, '_blank');
+    const fullUrl = `${window.APP_URL}/asset-transfers/${transferId}/print`;
+    window.open(fullUrl, '_blank');
 };
+
+
 
 </script>
 
