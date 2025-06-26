@@ -103,7 +103,7 @@ const submitForm = () => {
 // Executes the delete operation after confirmation
 const executeDelete = () => {
     if (transferToDelete.value) {
-        form.delete(route('asset-transfers.destroy', form.id),{
+        form.delete(route('asset-transfers.destroy', transferToDelete.value),{
         // form.delete(`/asset-transfers/${transferToDelete.value}`, {
             onSuccess: () => {
                 showDeleteConfirmModal.value = false; // Hide confirmation modal on success
