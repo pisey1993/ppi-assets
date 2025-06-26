@@ -152,13 +152,7 @@ const printTransfer = (transferId) => {
             <td class="px-4 py-2 whitespace-nowrap space-x-2">
                 <button @click="openEditModal(t)" class="text-indigo-600 hover:underline">Edit</button>
                 <button @click="confirmDelete(t.id)" class="text-red-600 hover:underline">Delete</button>
-<!--                <button @click="printTransfer(t.id)" class="text-green-600 hover:underline">Print</button>-->
-                <a
-                    :href="`${appUrl}/assets/${t.id}`"
-                    class="text-green-600 hover:text-green-800 text-sm"
-                >
-                    Print
-                </a>
+                <button @click="printTransfer(t.id)" class="text-green-600 hover:underline">Print</button>
             </td>
         </tr>
         <tr v-if="transfers.length === 0">
