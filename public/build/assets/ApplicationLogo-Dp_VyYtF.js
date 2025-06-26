@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{c as t,o as e}from"./app-DSV-km4U.js";const c={},r={src:"https://www.peoplenpartners.com/img/logo.png",style:{width:"150px",height:"100px"}};function n(s,p){return e(),t("img",r)}const a=o(c,[["render",n]]);export{a as A};
