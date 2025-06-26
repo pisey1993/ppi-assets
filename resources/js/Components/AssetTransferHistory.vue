@@ -87,13 +87,13 @@ const confirmDelete = (transferId) => {
 const submitForm = () => {
     if (editing.value) {
         // If in edit mode, send a PUT request to update the transfer
-        form.put(`/asset-transfers/${form.id}`, {
+        form.put(route('asset-transfers.update', form.id), {
             onSuccess: () => (showModal.value = false), // Hide modal on success
             onError: (errors) => console.error('Update error:', errors)
         });
     } else {
         // If in create mode, send a POST request to store the new transfer
-        form.post('/asset-transfers', {
+        form.post(route('asset-transfers.store'), {
             onSuccess: () => (showModal.value = false), // Hide modal on success
             onError: (errors) => console.error('Create error:', errors)
         });
