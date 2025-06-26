@@ -103,12 +103,11 @@ const submitForm = () => {
 // Executes the delete operation after confirmation
 const executeDelete = () => {
     if (transferToDelete.value) {
-        const url = route('asset-transfers.destroy', transferToDelete.value); // named route with ID
-
-        router.delete(url, {
+        form.delete(route('asset-transfers.delete', form.id),{
+        // form.delete(`/asset-transfers/${transferToDelete.value}`, {
             onSuccess: () => {
-                showDeleteConfirmModal.value = false;
-                transferToDelete.value = null;
+                showDeleteConfirmModal.value = false; // Hide confirmation modal on success
+                transferToDelete.value = null; // Clear the ID
             },
             onError: (errors) => console.error('Delete error:', errors)
         });
