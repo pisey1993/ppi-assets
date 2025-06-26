@@ -115,7 +115,8 @@ const executeDelete = () => {
 
 // Function to print a specific transfer record
 const printTransfer = (transferId) => {
-    const fullUrl = `${window.APP_URL}/asset-transfers/${transferId}/print`;
+    const fullUrl = `public/ppi-asset/public/asset-transfers/${transferId}/print`;
+    // const fullUrl = `/asset-transfers/${transferId}/print`;
     window.open(fullUrl, '_blank');
 };
 
