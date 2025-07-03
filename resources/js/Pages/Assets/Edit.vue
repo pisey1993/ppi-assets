@@ -237,9 +237,26 @@ const submit = () => {
                         </div>
                         <div class="md:col-span-3 flex justify-between items-center">
                             <div>
+                                <!--                                <button-->
+                                <!--                                    v-if="previous_id"-->
+                                <!--                                    @click="$inertia.visit(`/assets/${previous_id}/edit`)"-->
+                                <!--                                    type="button"-->
+                                <!--                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded mr-2"-->
+                                <!--                                >-->
+                                <!--                                    ← Previous-->
+                                <!--                                </button>-->
+
+                                <!--                                <button-->
+                                <!--                                    v-if="next_id"-->
+                                <!--                                    @click="$inertia.visit(`/assets/${next_id}/edit`)"-->
+                                <!--                                    type="button"-->
+                                <!--                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"-->
+                                <!--                                >-->
+                                <!--                                    Next →-->
+                                <!--                                </button>-->
                                 <button
                                     v-if="previous_id"
-                                    @click="$inertia.visit(`/assets/${previous_id}/edit`)"
+                                    @click="$inertia.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${previous_id}/edit`)"
                                     type="button"
                                     class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded mr-2"
                                 >
@@ -248,12 +265,13 @@ const submit = () => {
 
                                 <button
                                     v-if="next_id"
-                                    @click="$inertia.visit(`/assets/${next_id}/edit`)"
+                                    @click="$inertia.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${next_id}/edit`)"
                                     type="button"
                                     class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
                                 >
                                     Next →
                                 </button>
+
                             </div>
 
                             <button
