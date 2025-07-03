@@ -131,11 +131,11 @@ const form = useForm({
 });
 
 onMounted(() => {
-    const matches = [...page.url.matchAll(/\/assets\/(\d+)/g)];
-// Get the last match (if any)
-    assetId.value = matches.length > 0 ? matches[matches.length - 1][1] : '';
+    const match = window.location.pathname.match(/\/assets\/(\d+)/);
+    assetId.value = match ? Number(match[1]) : null;
     console.log('Extracted asset ID:', assetId.value);
 });
+
 
 const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-GB');
 
