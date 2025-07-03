@@ -2,22 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Repair;
+use App\Models\User;
+use App\Models\Location;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RepairController extends Controller
 {
-    // Get repairs for asset - returns JSON
+    // Display repairs for a given asset using Inertia
     public function index($assetId)
     {
         $repairs = Repair::where('asset_id', $assetId)
             ->orderByDesc('repair_date')
             ->get();
 
-        return response()->json($repairs);
+        // You can fetch additional data if needed
+        $users = User::all(); // example
+        $locations = Location::all(); // example
+
+        return Inertia::render('Asset/Repairs', [
+            'repairs' => $repairs,
+            'assetId' => $assetId,
+            'users' => $users,
+            'locations' => $locations,
+        ]);
     }
 
-    // Store new repair - expects JSON data, returns JSON
+    // Store new repair - Inertia-compatible
     public function store(Request $request, $assetId)
     {
         $validated = $request->validate([
@@ -31,12 +43,12 @@ class RepairController extends Controller
 
         $validated['asset_id'] = $assetId;
 
-        $repair = Repair::create($validated);
+        Repair::create($validated);
 
-        return response()->json($repair, 201);
+        return redirect()->back()->with('success', 'Repair added successfully.');
     }
 
-    // Update repair by id
+    // Update existing repair
     public function update(Request $request, $repairId)
     {
         $repair = Repair::findOrFail($repairId);
@@ -52,14 +64,14 @@ class RepairController extends Controller
 
         $repair->update($validated);
 
-        return response()->json($repair);
+        return redirect()->back()->with('success', 'Repair updated successfully.');
     }
 
-    // Delete repair by id
+    // Delete repair
     public function destroy($repairId)
     {
         Repair::destroy($repairId);
 
-        return response()->json(['message' => 'Repair deleted successfully.']);
+        return redirect()->back()->with('success', 'Repair deleted successfully.');
     }
 }
