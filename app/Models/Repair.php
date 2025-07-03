@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Repair extends Model
 {
     protected $table = 'asset_repairs';
+
     protected $fillable = [
         'asset_id',
         'repair_date',
@@ -18,4 +19,9 @@ class Repair extends Model
         'updated_at',
         'created_at',
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(Assets::class, 'asset_id');
+    }
 }

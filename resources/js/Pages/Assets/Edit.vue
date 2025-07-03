@@ -1,13 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue'; // Import computed
-import { useForm, usePage, Head } from '@inertiajs/vue3';
+import {ref, computed} from 'vue'; // Import computed
+import {useForm, usePage, Head} from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import AssetTransferHistory from '@/Components/AssetTransferHistory.vue';
 import AssetRepairHistory from '@/Components/AssetRepairHistory.vue';
-import { ElSelect, ElOption } from 'element-plus'; // Assuming Element Plus is configured in your project
 
 // Access flash messages from Inertia.js page props
-const { flash } = usePage().props;
+const {flash} = usePage().props;
 
 // Reactive state for showing the success modal
 const showSuccessModal = ref(false);
@@ -17,11 +16,12 @@ const activeTab = ref('edit');
 
 // Define props received by this component
 const props = defineProps({
-    asset: Object, // The asset object to be edited
-    users: Array, // List of users for assignment dropdown
-    locations: Array, // List of locations for current location dropdown
-    categories: Array, // List of categories for category dropdown
-    transfers: Array, // Transfer history data
+    asset: Object,
+    repairs: Array,
+    users: Array,
+    locations: Array,
+    categories: Array,
+    transfers: Array,
     next_id: Number, // ID of the next asset for navigation
     previous_id: Number, // ID of the previous asset for navigation
 });
@@ -76,7 +76,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Edit Asset" />
+    <Head title="Edit Asset"/>
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold text-gray-800">Edit Asset</h2>
@@ -138,12 +138,13 @@ const submit = () => {
                     <form @submit.prevent="submit" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Asset Code</label>
-                            <input v-model="form.asset_code" placeholder="Asset Code" class="border p-2 rounded w-full" />
+                            <input v-model="form.asset_code" placeholder="Asset Code"
+                                   class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
-                            <input v-model="form.name" placeholder="Name" class="border p-2 rounded w-full" />
+                            <input v-model="form.name" placeholder="Name" class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
@@ -158,32 +159,34 @@ const submit = () => {
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Model</label>
-                            <input v-model="form.model" placeholder="Model" class="border p-2 rounded w-full" />
+                            <input v-model="form.model" placeholder="Model" class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Serial Number</label>
-                            <input v-model="form.serial_number" placeholder="Serial Number" class="border p-2 rounded w-full" />
+                            <input v-model="form.serial_number" placeholder="Serial Number"
+                                   class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Vendor</label>
-                            <input v-model="form.vendor" placeholder="Vendor" class="border p-2 rounded w-full" />
+                            <input v-model="form.vendor" placeholder="Vendor" class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Purchase Date</label>
-                            <input v-model="form.purchase_date" type="date" class="border p-2 rounded w-full" />
+                            <input v-model="form.purchase_date" type="date" class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Purchase Cost</label>
-                            <input v-model="form.purchase_cost" type="number" placeholder="Cost" class="border p-2 rounded w-full" />
+                            <input v-model="form.purchase_cost" type="number" placeholder="Cost"
+                                   class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Warranty Expiry</label>
-                            <input v-model="form.warranty_expiry" type="date" class="border p-2 rounded w-full" />
+                            <input v-model="form.warranty_expiry" type="date" class="border p-2 rounded w-full"/>
                         </div>
 
                         <div>
@@ -224,11 +227,13 @@ const submit = () => {
 
                         <div class="md:col-span-3">
                             <label class="block mb-1 text-sm font-medium text-gray-700">Notes</label>
-                            <textarea v-model="form.notes" placeholder="Notes" class="border p-2 rounded w-full"></textarea>
+                            <textarea v-model="form.notes" placeholder="Notes"
+                                      class="border p-2 rounded w-full"></textarea>
                         </div>
                         <div class="md:col-span-3">
                             <label class="block mb-1 text-sm font-medium text-gray-700">remark</label>
-                            <textarea v-model="form.remark" placeholder="Remark" class="border p-2 rounded w-full"></textarea>
+                            <textarea v-model="form.remark" placeholder="Remark"
+                                      class="border p-2 rounded w-full"></textarea>
                         </div>
                         <div class="md:col-span-3 flex justify-between items-center">
                             <div>
@@ -275,7 +280,7 @@ const submit = () => {
 
                 <!-- Repair History -->
                 <div v-show="activeTab === 'repair'">
-                    <AssetRepairHistory :asset="asset" />
+                    <AssetRepairHistory :repairs="repairs"/>
                 </div>
 
             </div>
@@ -288,6 +293,7 @@ const submit = () => {
 .fade-enter-active, .fade-leave-active {
     transition: opacity 0.3s ease;
 }
+
 .fade-enter-from, .fade-leave-to {
     opacity: 0;
 }

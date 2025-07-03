@@ -11,23 +11,18 @@ use Inertia\Inertia;
 class RepairController extends Controller
 {
     // Display repairs for a given asset using Inertia
+    // In controller
     public function index($assetId)
     {
-        $repairs = Repair::where('asset_id', $assetId)
-            ->orderByDesc('repair_date')
-            ->get();
+        $repairs = Repair::where('asset_id', $assetId)->get();
 
-        // You can fetch additional data if needed
-        $users = User::all(); // example
-        $locations = Location::all(); // example
-
-        return Inertia::render('Asset/Repairs', [
+        return Inertia::render('AssetRepairHistory', [
             'repairs' => $repairs,
-            'assetId' => $assetId,
-            'users' => $users,
-            'locations' => $locations,
+            'assetId' => (int) $assetId,
         ]);
     }
+
+
 
     // Store new repair - Inertia-compatible
     public function store(Request $request, $assetId)
@@ -45,8 +40,10 @@ class RepairController extends Controller
 
         Repair::create($validated);
 
-        return redirect()->back()->with('success', 'Repair added successfully.');
+        return redirect()->route('repairs.index', ['assetId' => $assetId])
+            ->with('success', 'Repair added successfully.');
     }
+
 
     // Update existing repair
     public function update(Request $request, $repairId)

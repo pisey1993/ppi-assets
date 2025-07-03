@@ -28,8 +28,11 @@ class Assets extends Model
     {
         return $this->hasMany(AssetTransfer::class, 'asset_id');
     }
-// App\Models\Assets.php
 
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class, 'asset_id');
+    }
     public function category()
     {
         return $this->belongsTo(Categories::class, 'category'); // adjust column if it's named differently

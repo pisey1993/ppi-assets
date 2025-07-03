@@ -77,13 +77,14 @@ class AssetsController extends Controller
 
     public function edit($id)
     {
-        $asset = Assets::with(['category', 'transfers', 'assignedUser', 'currentLocation'])->findOrFail($id);
+        $asset = Assets::with(['category', 'transfers', 'repairs', 'assignedUser', 'currentLocation'])->findOrFail($id);
 
         $next = Assets::where('id', '>', $id)->orderBy('id')->first();
         $previous = Assets::where('id', '<', $id)->orderByDesc('id')->first();
 
         return Inertia::render('Assets/Edit', [
             'asset' => $asset,
+            'repairs' => $asset->repairs,
             'users' => User::all(),
             'locations' => Locations::all(),
             'categories' => Categories::all(),

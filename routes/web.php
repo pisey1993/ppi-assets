@@ -9,11 +9,24 @@ use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\AssetTransferController;
 use App\Http\Controllers\RepairController;
 
+// --- Routes for the RepairController ---
+Route::post('/assets/{asset}/repairs', [RepairController::class, 'store'])->name('repairs.store');
+Route::controller(RepairController::class)->group(function () {
+    // This route corresponds to the `index` method and is used to render the initial page.
+    // It's functionally similar to the assets.show route above if the component is on that page.
+    // If 'Asset/Repairs' is a standalone page, you would use this route to get there.
+    Route::get('/assets/{assetId}/repairs', 'index')->name('repairs.index');
 
-Route::prefix('assets/{asset}/repairs')->group(function () {
-    Route::get('/', [RepairController::class, 'index']);      // GET /assets/{asset}/repairs - list repairs for asset
-    Route::post('/', [RepairController::class, 'store']);     // POST /assets/{asset}/repairs - create repair
+    // POST route to store a new repair. Corresponds to the `store` method.
+    Route::post('/assets/{assetId}/repairs', 'store')->name('repairs.store');
+
+    // PUT route to update an existing repair. Corresponds to the `update` method.
+    Route::put('/repairs/{repairId}', 'update')->name('repairs.update');
+
+    // DELETE route to destroy a repair. Corresponds to the `destroy` method.
+    Route::delete('/repairs/{repairId}', 'destroy')->name('repairs.destroy');
 });
+
 
 Route::prefix('repairs')->group(function () {
     Route::put('{repair}', [RepairController::class, 'update']);    // PUT /repairs/{repair} - update repair
@@ -51,4 +64,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
