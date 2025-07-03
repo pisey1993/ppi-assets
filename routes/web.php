@@ -10,11 +10,15 @@ use App\Http\Controllers\AssetTransferController;
 use App\Http\Controllers\RepairController;
 
 
-Route::get('/repairs', [RepairController::class, 'index']);
-Route::post('/repairs', [RepairController::class, 'store']);
-Route::put('/repairs/{id}', [RepairController::class, 'update']);
-Route::delete('/repairs/{id}', [RepairController::class, 'destroy']);
-Route::get('/assets/{asset}/repairs', [RepairController::class, 'getByAsset']);
+Route::prefix('assets/{asset}/repairs')->group(function () {
+    Route::get('/', [RepairController::class, 'index']);      // GET /assets/{asset}/repairs - list repairs for asset
+    Route::post('/', [RepairController::class, 'store']);     // POST /assets/{asset}/repairs - create repair
+});
+
+Route::prefix('repairs')->group(function () {
+    Route::put('{repair}', [RepairController::class, 'update']);    // PUT /repairs/{repair} - update repair
+    Route::delete('{repair}', [RepairController::class, 'destroy']); // DELETE /repairs/{repair} - delete repair
+});
 
 
 Route::resource('asset-transfers', AssetTransferController::class);

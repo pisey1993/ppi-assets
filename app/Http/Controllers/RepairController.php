@@ -7,21 +7,20 @@ use App\Models\Repair;
 
 class RepairController extends Controller
 {
-    // Return all repairs (you can limit or paginate as needed)
+    // Get repairs for asset - returns JSON
     public function index($assetId)
     {
         $repairs = Repair::where('asset_id', $assetId)
             ->orderByDesc('repair_date')
             ->get();
 
-        return view('repairs.index', compact('repairs'));
+        return response()->json($repairs);
     }
 
-    // Store new repair with validation
-    public function store(Request $request)
+    // Store new repair - expects JSON data, returns JSON
+    public function store(Request $request, $assetId)
     {
-        $data = $request->validate([
-            'asset_id' => 'required|exists:assets,id',
+        $validated = $request->validate([
             'repair_date' => 'required|date',
             'issue' => 'nullable|string|max:255',
             'repair_cost' => 'nullable|numeric',
@@ -30,22 +29,19 @@ class RepairController extends Controller
             'remarks' => 'nullable|string',
         ]);
 
-        $repair = Repair::create($data);
+        $validated['asset_id'] = $assetId;
 
-        // Return JSON for AJAX requests or redirect for web
-        if ($request->wantsJson()) {
-            return response()->json(['message' => 'Repair added!', 'repair' => $repair], 201);
-        }
+        $repair = Repair::create($validated);
 
-        return redirect()->back()->with('success', 'Repair added!');
+        return response()->json($repair, 201);
     }
 
-    // Update repair by id with validation
-    public function update(Request $request, $id)
+    // Update repair by id
+    public function update(Request $request, $repairId)
     {
-        $repair = Repair::findOrFail($id);
+        $repair = Repair::findOrFail($repairId);
 
-        $data = $request->validate([
+        $validated = $request->validate([
             'repair_date' => 'required|date',
             'issue' => 'nullable|string|max:255',
             'repair_cost' => 'nullable|numeric',
@@ -54,32 +50,16 @@ class RepairController extends Controller
             'remarks' => 'nullable|string',
         ]);
 
-        $repair->update($data);
+        $repair->update($validated);
 
-        if ($request->wantsJson()) {
-            return response()->json(['message' => 'Repair updated!', 'repair' => $repair]);
-        }
-
-        return redirect()->back()->with('success', 'Repair updated!');
+        return response()->json($repair);
     }
 
     // Delete repair by id
-    public function destroy(Request $request, $id)
+    public function destroy($repairId)
     {
-        Repair::destroy($id);
+        Repair::destroy($repairId);
 
-        if ($request->wantsJson()) {
-            return response()->json(['message' => 'Repair deleted!']);
-        }
-
-        return redirect()->back()->with('success', 'Repair deleted!');
-    }
-
-    // Get repairs by asset id (for your Vue component)
-    public function getByAsset($assetId)
-    {
-        $repairs = Repair::where('asset_id', $assetId)->orderByDesc('repair_date')->get();
-
-        return response()->json($repairs);
+        return response()->json(['message' => 'Repair deleted successfully.']);
     }
 }
