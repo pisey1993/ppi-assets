@@ -7,16 +7,22 @@
         </div>
 
         <!-- Repair Modal -->
-        <el-dialog v-model="showRepairModal" :title="form.id ? 'Edit Repair' : 'Add Repair'" width="600px">
+        <el-dialog
+            v-model="showRepairModal"
+            :title="form.id ? 'Edit Repair' : 'Add Repair'"
+            width="600px"
+            @close="resetForm"
+        >
             <form @submit.prevent="submitForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <el-date-picker
                     v-model="form.repair_date"
                     type="date"
                     placeholder="Repair Date"
                     style="width: 100%"
+                    :disabled-date="disabledFutureDates"
                 />
                 <el-input v-model="form.issue" placeholder="Issue" />
-                <el-input v-model="form.repair_cost" type="number" placeholder="Cost" />
+                <el-input v-model.number="form.repair_cost" type="number" placeholder="Cost" />
                 <el-input v-model="form.status" placeholder="Status" />
                 <el-input v-model="form.vendor" placeholder="Vendor" />
                 <el-input
@@ -27,7 +33,7 @@
                     class="md:col-span-2"
                 />
 
-                <div class="md:col-span-2 flex justify-end mt-2">
+                <div class="md:col-span-2 flex justify-end mt-2 space-x-2">
                     <el-button @click="showRepairModal = false">Cancel</el-button>
                     <el-button type="primary" native-type="submit">{{ form.id ? 'Update' : 'Add' }}</el-button>
                 </div>
@@ -58,15 +64,20 @@
             </thead>
             <tbody>
             <tr v-for="r in repairs" :key="r.id" class="border-t">
-                <td class="p-2">{{ r.repair_date }}</td>
+                <td class="p-2">{{ formatDate(r.repair_date) }}</td>
                 <td class="p-2">{{ r.issue }}</td>
-                <td class="p-2">{{ r.repair_cost }}</td>
+                <td class="p-2">{{ formatCurrency(r.repair_cost) }}</td>
                 <td class="p-2">{{ r.status }}</td>
                 <td class="p-2">{{ r.vendor }}</td>
                 <td class="p-2">{{ r.remarks }}</td>
-                <td class="p-2">
+                <td class="p-2 space-x-2">
                     <el-button type="text" size="small" @click="editRepair(r)">Edit</el-button>
-                    <el-button type="text" size="small" class="text-red-600" @click="confirmDelete(r.id)">Delete</el-button>
+                    <el-button
+                        type="text"
+                        size="small"
+                        class="text-red-600"
+                        @click="confirmDelete(r.id)"
+                    >Delete</el-button>
                 </td>
             </tr>
             <tr v-if="repairs.length === 0">
@@ -74,6 +85,19 @@
             </tr>
             </tbody>
         </table>
+
+        <!-- Success message -->
+        <el-alert
+            v-if="successMessage"
+            title="Success"
+            type="success"
+            :closable="true"
+            @close="successMessage = ''"
+            class="mt-4"
+            show-icon
+        >
+            {{ successMessage }}
+        </el-alert>
     </div>
 </template>
 
@@ -94,6 +118,7 @@ const repairs = ref([])
 const showRepairModal = ref(false)
 const showDeleteModal = ref(false)
 const deleteId = ref(null)
+const successMessage = ref('')
 
 const form = useForm({
     id: null,
@@ -103,7 +128,7 @@ const form = useForm({
     repair_cost: '',
     status: '',
     vendor: '',
-    remarks: '',
+    remarks: ''
 })
 
 // Load repair history
@@ -119,7 +144,7 @@ const loadRepairs = async () => {
 
 // Open create modal
 const openCreateModal = () => {
-    form.reset()
+    resetForm()
     form.asset_id = props.asset.id
     showRepairModal.value = true
 }
@@ -142,7 +167,7 @@ const editRepair = (repair) => {
 const submitForm = () => {
     const payload = {
         ...form.data(),
-        repair_date: dayjs(form.repair_date).format('YYYY-MM-DD'),
+        repair_date: dayjs(form.repair_date).format('YYYY-MM-DD')
     }
 
     const method = form.id ? 'put' : 'post'
@@ -153,8 +178,9 @@ const submitForm = () => {
         data: payload,
         preserveScroll: true,
         onSuccess: () => {
-            showRepairModal.value = false
+            successMessage.value = form.id ? 'Repair updated successfully!' : 'Repair added successfully!'
             loadRepairs()
+            // Keep the modal open after save (per your request)
         },
         onError: (err) => {
             console.error('Validation failed:', err)
@@ -175,18 +201,51 @@ const executeDelete = () => {
         onSuccess: () => {
             showDeleteModal.value = false
             deleteId.value = null
+            successMessage.value = 'Repair deleted successfully!'
             loadRepairs()
         }
     })
 }
 
-// Watch for asset change
-watch(() => props.asset.id, (newId) => {
-    if (newId) {
-        form.asset_id = newId
-        loadRepairs()
+// Reset form fields
+const resetForm = () => {
+    form.id = null
+    form.asset_id = props.asset.id
+    form.repair_date = ''
+    form.issue = ''
+    form.repair_cost = ''
+    form.status = ''
+    form.vendor = ''
+    form.remarks = ''
+    successMessage.value = ''
+}
+
+// Format date (e.g. YYYY-MM-DD to localized)
+const formatDate = (date) => {
+    return date ? dayjs(date).format('DD/MM/YYYY') : '-'
+}
+
+// Format currency display with 2 decimals, empty if no value
+const formatCurrency = (value) => {
+    if (value == null || value === '') return '-'
+    return parseFloat(value).toFixed(2)
+}
+
+// Prevent selecting future dates in date picker (optional)
+const disabledFutureDates = (time) => {
+    return time.getTime() > Date.now()
+}
+
+// Reload repairs when asset changes
+watch(
+    () => props.asset.id,
+    (newId) => {
+        if (newId) {
+            form.asset_id = newId
+            loadRepairs()
+        }
     }
-})
+)
 
 onMounted(() => loadRepairs())
 </script>

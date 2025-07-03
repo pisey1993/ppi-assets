@@ -8,9 +8,12 @@ use App\Models\Repair;
 class RepairController extends Controller
 {
     // Return all repairs (you can limit or paginate as needed)
-    public function index()
+    public function index($assetId)
     {
-        $repairs = Repair::all();
+        $repairs = Repair::where('asset_id', $assetId)
+            ->orderByDesc('repair_date')
+            ->get();
+
         return view('repairs.index', compact('repairs'));
     }
 
