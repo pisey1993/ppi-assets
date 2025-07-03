@@ -16,13 +16,11 @@ class RepairController extends Controller
     {
         $repairs = Repair::where('asset_id', $assetId)->get();
 
-        return Inertia::render('AssetRepairHistory', [
+        return Inertia::render('Assets/Edit', [
             'repairs' => $repairs,
             'assetId' => (int) $assetId,
         ]);
     }
-
-
 
     // Store new repair - Inertia-compatible
     public function store(Request $request, $assetId)
