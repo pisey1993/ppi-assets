@@ -131,8 +131,9 @@ const form = useForm({
 });
 
 onMounted(() => {
-    const pathSegments = window.location.pathname.split('/');
-    assetId.value = Number(pathSegments[2]);
+    const matches = [...page.url.matchAll(/\/assets\/(\d+)/g)];
+// Get the last match (if any)
+    assetId.value = matches.length > 0 ? matches[matches.length - 1][1] : '';
     console.log('Extracted asset ID:', assetId.value);
 });
 
