@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'; // Import computed
 import { useForm, usePage, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import AssetTransferHistory from '@/Components/AssetTransferHistory.vue';
+import AssetRepairHistory from '@/Components/AssetRepairHistory.vue';
 import { ElSelect, ElOption } from 'element-plus'; // Assuming Element Plus is configured in your project
 
 // Access flash messages from Inertia.js page props
@@ -274,8 +275,9 @@ const submit = () => {
 
                 <!-- Repair History -->
                 <div v-show="activeTab === 'repair'">
-                    <p class="text-gray-600">Repair History will be shown here.</p>
+                    <AssetRepairHistory :asset="asset" />
                 </div>
+
             </div>
         </div>
     </AuthenticatedLayout>

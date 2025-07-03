@@ -35,12 +35,12 @@ class AssetTransferController extends Controller
             });
 
         $users = User::select('id', 'name')->get();
-        $locations = Locations::select('id', 'name')->get();
+        $department = Departments::select('id', 'name')->get();
 
         return Inertia::render('Asset/TransferHistory', [
             'transfers' => $transfers,
             'users' => $users,
-            'locations' => $locations,
+            'locations' => $department,
         ]);
     }
 

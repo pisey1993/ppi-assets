@@ -7,6 +7,15 @@ use Inertia\Inertia;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\AssetTransferController;
+use App\Http\Controllers\RepairController;
+
+
+Route::get('/repairs', [RepairController::class, 'index']);
+Route::post('/repairs', [RepairController::class, 'store']);
+Route::put('/repairs/{id}', [RepairController::class, 'update']);
+Route::delete('/repairs/{id}', [RepairController::class, 'destroy']);
+Route::get('/assets/{asset}/repairs', [RepairController::class, 'getByAsset']);
+
 
 Route::resource('asset-transfers', AssetTransferController::class);
 Route::get('/asset-transfers/{transfer}/print', [AssetTransferController::class, 'print'])
