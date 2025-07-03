@@ -7,18 +7,29 @@
         </div>
 
         <!-- Repair Modal -->
-        <el-dialog v-model="showRepairModal" :title="repairForm.id ? 'Edit Repair' : 'Add Repair'" width="600px">
-            <form @submit.prevent="saveRepair" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <el-date-picker v-model="repairForm.repair_date" type="date" placeholder="Repair Date" style="width: 100%" />
-                <el-input v-model="repairForm.issue" placeholder="Issue" />
-                <el-input v-model="repairForm.repair_cost" type="number" placeholder="Cost" />
-                <el-input v-model="repairForm.status" placeholder="Status" />
-                <el-input v-model="repairForm.vendor" placeholder="Vendor" />
-                <el-input v-model="repairForm.remarks" type="textarea" placeholder="Remarks" :rows="2" class="md:col-span-2" />
+        <el-dialog v-model="showRepairModal" :title="form.id ? 'Edit Repair' : 'Add Repair'" width="600px">
+            <form @submit.prevent="submitForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <el-date-picker
+                    v-model="form.repair_date"
+                    type="date"
+                    placeholder="Repair Date"
+                    style="width: 100%"
+                />
+                <el-input v-model="form.issue" placeholder="Issue" />
+                <el-input v-model="form.repair_cost" type="number" placeholder="Cost" />
+                <el-input v-model="form.status" placeholder="Status" />
+                <el-input v-model="form.vendor" placeholder="Vendor" />
+                <el-input
+                    v-model="form.remarks"
+                    type="textarea"
+                    placeholder="Remarks"
+                    :rows="2"
+                    class="md:col-span-2"
+                />
 
                 <div class="md:col-span-2 flex justify-end mt-2">
                     <el-button @click="showRepairModal = false">Cancel</el-button>
-                    <el-button type="primary" native-type="submit">{{ repairForm.id ? 'Update' : 'Add' }}</el-button>
+                    <el-button type="primary" native-type="submit">{{ form.id ? 'Update' : 'Add' }}</el-button>
                 </div>
             </form>
         </el-dialog>
@@ -28,7 +39,7 @@
             <p>Are you sure you want to delete this repair?</p>
             <template #footer>
                 <el-button @click="showDeleteModal = false">Cancel</el-button>
-                <el-button type="danger" @click="confirmDelete">Delete</el-button>
+                <el-button type="danger" @click="executeDelete">Delete</el-button>
             </template>
         </el-dialog>
 
@@ -55,8 +66,11 @@
                 <td class="p-2">{{ r.remarks }}</td>
                 <td class="p-2">
                     <el-button type="text" size="small" @click="editRepair(r)">Edit</el-button>
-                    <el-button type="text" size="small" class="text-red-600" @click="prepareDelete(r.id)">Delete</el-button>
+                    <el-button type="text" size="small" class="text-red-600" @click="confirmDelete(r.id)">Delete</el-button>
                 </td>
+            </tr>
+            <tr v-if="repairs.length === 0">
+                <td colspan="7" class="p-2 text-center text-gray-500">No repair history found.</td>
             </tr>
             </tbody>
         </table>
@@ -64,8 +78,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { ref, onMounted, watch } from 'vue'
+import { useForm } from '@inertiajs/vue3'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
@@ -81,7 +95,7 @@ const showRepairModal = ref(false)
 const showDeleteModal = ref(false)
 const deleteId = ref(null)
 
-const repairForm = reactive({
+const form = useForm({
     id: null,
     asset_id: props.asset.id,
     repair_date: '',
@@ -92,6 +106,7 @@ const repairForm = reactive({
     remarks: '',
 })
 
+// Load repair history
 const loadRepairs = async () => {
     if (!props.asset?.id) return
     try {
@@ -102,51 +117,60 @@ const loadRepairs = async () => {
     }
 }
 
+// Open create modal
 const openCreateModal = () => {
-    resetForm()
+    form.reset()
+    form.asset_id = props.asset.id
     showRepairModal.value = true
 }
 
-const saveRepair = () => {
-    const url = repairForm.id ? `/repairs/${repairForm.id}` : '/repairs'
-    const method = repairForm.id ? 'put' : 'post'
+// Open edit modal
+const editRepair = (repair) => {
+    form.reset()
+    form.id = repair.id
+    form.asset_id = repair.asset_id
+    form.repair_date = repair.repair_date
+    form.issue = repair.issue
+    form.repair_cost = repair.repair_cost
+    form.status = repair.status
+    form.vendor = repair.vendor
+    form.remarks = repair.remarks
+    showRepairModal.value = true
+}
 
+// Submit form (create or update)
+const submitForm = () => {
     const payload = {
-        ...repairForm,
-        repair_date: dayjs(repairForm.repair_date).format('YYYY-MM-DD'),
+        ...form.data(),
+        repair_date: dayjs(form.repair_date).format('YYYY-MM-DD'),
     }
 
-    router.visit(url, {
-        method,
+    const method = form.id ? 'put' : 'post'
+    const url = form.id ? `/repairs/${form.id}` : '/repairs'
+
+    form.clearErrors()
+    form[method](url, {
         data: payload,
         preserveScroll: true,
         onSuccess: () => {
             showRepairModal.value = false
-            resetForm()
             loadRepairs()
         },
         onError: (err) => {
-            console.error('Failed to save:', err)
-            alert('Save failed')
+            console.error('Validation failed:', err)
         }
     })
 }
 
-const editRepair = (repair) => {
-    Object.assign(repairForm, {
-        ...repair,
-        repair_date: repair.repair_date // keep original string for <el-date-picker>
-    })
-    showRepairModal.value = true
-}
-
-const prepareDelete = (id) => {
+// Confirm delete
+const confirmDelete = (id) => {
     deleteId.value = id
     showDeleteModal.value = true
 }
 
-const confirmDelete = () => {
-    router.delete(`/repairs/${deleteId.value}`, {
+// Execute delete
+const executeDelete = () => {
+    form.delete(`/repairs/${deleteId.value}`, {
         preserveScroll: true,
         onSuccess: () => {
             showDeleteModal.value = false
@@ -156,23 +180,13 @@ const confirmDelete = () => {
     })
 }
 
-const resetForm = () => {
-    repairForm.id = null
-    repairForm.asset_id = props.asset.id
-    repairForm.repair_date = ''
-    repairForm.issue = ''
-    repairForm.repair_cost = ''
-    repairForm.status = ''
-    repairForm.vendor = ''
-    repairForm.remarks = ''
-}
-
-onMounted(() => loadRepairs())
-
+// Watch for asset change
 watch(() => props.asset.id, (newId) => {
     if (newId) {
-        repairForm.asset_id = newId
+        form.asset_id = newId
         loadRepairs()
     }
 })
+
+onMounted(() => loadRepairs())
 </script>
