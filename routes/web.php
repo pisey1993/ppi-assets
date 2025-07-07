@@ -8,22 +8,33 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\AssetTransferController;
 use App\Http\Controllers\RepairController;
-
+use App\Exports\AssetsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 // --- Routes for the RepairController ---
+
+Route::get('/repairs/report/export', [RepairController::class, 'export'])->name('repairs.report.export');
+
+
+
+
+Route::get('/assets/report/export', function (Request $request) {
+    $filters = $request->only([
+        'name', 'status', 'department',
+        'purchase_date_from', 'purchase_date_to', 'purchase_age',
+    ]);
+
+    return Excel::download(new AssetsExport($filters), 'asset_report.xlsx');
+})->name('assets.report.export');
+
+Route::get('/assets/report', [AssetsController::class, 'report'])->name('assets.report');
 Route::post('/assets/{asset}/repairs', [RepairController::class, 'store'])->name('repairs.store');
 Route::controller(RepairController::class)->group(function () {
-    // This route corresponds to the `index` method and is used to render the initial page.
-    // It's functionally similar to the assets.show route above if the component is on that page.
-    // If 'Asset/Repairs' is a standalone page, you would use this route to get there.
+    Route::get('/repairs/report', 'report')->name('repairs.report');
+
     Route::get('/assets/{assetId}/repairs', 'index')->name('repairs.index');
-
-    // POST route to store a new repair. Corresponds to the `store` method.
     Route::post('/assets/{assetId}/repairs', 'store')->name('repairs.store');
-
-    // PUT route to update an existing repair. Corresponds to the `update` method.
     Route::put('/repairs/{repairId}', 'update')->name('repairs.update');
-
-    // DELETE route to destroy a repair. Corresponds to the `destroy` method.
     Route::delete('/repairs/{repairId}', 'destroy')->name('repairs.destroy');
 });
 

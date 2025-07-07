@@ -13,6 +13,58 @@ use App\Models\AssetTransfer;
 
 class AssetsController extends Controller
 {
+    public function report(Request $request)
+    {
+        $query = Assets::with(['category', 'assignedUser', 'currentLocation'])
+            ->when($request->name, fn($q) =>
+            $q->where('name', 'like', "%{$request->name}%")
+            )
+            ->when($request->status, fn($q) =>
+            $q->where('status', $request->status)
+            )
+            ->when($request->department, function ($q) use ($request) {
+                $q->whereHas('currentLocation', function ($subQuery) use ($request) {
+                    $subQuery->where('name', $request->department);
+                });
+            })
+            ->when($request->purchase_date_from, fn($q) =>
+            $q->whereDate('purchase_date', '>=', $request->purchase_date_from)
+            )
+            ->when($request->purchase_date_to, fn($q) =>
+            $q->whereDate('purchase_date', '<=', $request->purchase_date_to)
+            )
+            ->when($request->purchase_age, function ($q, $age) {
+                if (in_array($age, ['under_1', 'under_3', 'under_5'])) {
+                    $years = (int) str_replace('under_', '', $age);
+                    $cutoff = now()->subYears($years)->toDateString();
+                    $q->where('purchase_date', '>=', $cutoff); // Under X years
+                } else {
+                    $cutoff = now()->subYears((int) $age)->toDateString();
+                    $q->where('purchase_date', '<=', $cutoff); // Over X years
+                }
+            })
+            ->orderBy('purchase_date', 'asc');
+
+        $assets = $request->show_all
+            ? $query->get()
+            : $query->paginate(15)->withQueryString();
+
+        return view('assets-report', [
+            'assets' => $assets,
+            'filters' => $request->only([
+                'name', 'status', 'department',
+                'purchase_date_from', 'purchase_date_to', 'purchase_age', 'show_all',
+            ]),
+            'statuses' => ['available', 'assigned', 'repair', 'retired'],
+            'departments' => Locations::select('name')->distinct()->pluck('name'),
+        ]);
+    }
+
+
+
+
+
+
     public function index(Request $request)
     {
         $assets = Assets::with(['category', 'assignedUser'])
