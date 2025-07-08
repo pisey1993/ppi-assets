@@ -299,6 +299,11 @@
     "file": "assets/vue-l0sNRNKZ.js",
     "name": "vue"
   },
+  "resources/css/app.css": {
+    "file": "assets/app-Dbm3SPfR.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
   "resources/js/Pages/AssetTransfers/Print.vue": {
     "file": "assets/Print-CSVL-fLz.js",
     "name": "Print",

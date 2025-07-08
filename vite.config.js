@@ -9,7 +9,10 @@ import ElementPlus from 'unplugin-element-plus/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: 'resources/js/app.js',
+            input: [
+                'resources/css/app.css', // ✅ include CSS if exists
+                'resources/js/app.js',
+            ],
             refresh: true,
         }),
         vue({
