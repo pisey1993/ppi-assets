@@ -88,6 +88,7 @@ function Prev() {
     }
 
     // router.visit(`/assets/${targetId}/edit`);
+    console.log('prev', targetId);
     router.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/edit`);
 }
 function Next() {
@@ -102,7 +103,7 @@ function Next() {
         console.error('Invalid target asset ID.');
         return;
     }
-
+    console.log('next', targetId);
     // router.visit(`/assets/${targetId}/edit`);
     router.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/edit`);
 }
