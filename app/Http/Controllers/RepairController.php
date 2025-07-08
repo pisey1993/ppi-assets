@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Repair;
-use App\Models\User;
-use App\Models\Location;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RepairsExport;
 
 class RepairController extends Controller
 {
-    // Display repairs for a given asset using Inertia
-    // In controller
+    /**
+     * Export filtered repairs to Excel.
+     */
     public function export(Request $request)
     {
         $filters = $request->only([
@@ -23,6 +24,10 @@ class RepairController extends Controller
 
         return Excel::download(new RepairsExport($filters), $fileName);
     }
+
+    /**
+     * Show repairs report with filters.
+     */
     public function report(Request $request)
     {
         $query = Repair::query();
@@ -37,7 +42,7 @@ class RepairController extends Controller
         );
 
         $query->when($request->issue, fn($q) =>
-        $q->where('issue', 'like', '%'.$request->issue.'%')
+        $q->where('issue', 'like', '%' . $request->issue . '%')
         );
 
         $query->when($request->repair_cost_min, fn($q) =>
@@ -49,15 +54,15 @@ class RepairController extends Controller
         );
 
         $query->when($request->status, fn($q) =>
-        $q->where('status', 'like', '%'.$request->status.'%')
+        $q->where('status', 'like', '%' . $request->status . '%')
         );
 
         $query->when($request->vendor, fn($q) =>
-        $q->where('vendor', 'like', '%'.$request->vendor.'%')
+        $q->where('vendor', 'like', '%' . $request->vendor . '%')
         );
 
         $query->when($request->remarks, fn($q) =>
-        $q->where('remarks', 'like', '%'.$request->remarks.'%')
+        $q->where('remarks', 'like', '%' . $request->remarks . '%')
         );
 
         $repairs = $query->orderBy('repair_date', 'desc')->paginate(15)->withQueryString();
@@ -71,6 +76,9 @@ class RepairController extends Controller
         ]);
     }
 
+    /**
+     * Display repairs list for a given asset using Inertia.
+     */
     public function index($assetId)
     {
         $repairs = Repair::where('asset_id', $assetId)->get();
@@ -81,7 +89,9 @@ class RepairController extends Controller
         ]);
     }
 
-    // Store new repair - Inertia-compatible
+    /**
+     * Store a new repair.
+     */
     public function store(Request $request, $assetId)
     {
         $validated = $request->validate([
@@ -101,8 +111,9 @@ class RepairController extends Controller
             ->with('success', 'Repair added successfully.');
     }
 
-
-    // Update existing repair
+    /**
+     * Update an existing repair.
+     */
     public function update(Request $request, $repairId)
     {
         $repair = Repair::findOrFail($repairId);
@@ -121,7 +132,9 @@ class RepairController extends Controller
         return redirect()->back()->with('success', 'Repair updated successfully.');
     }
 
-    // Delete repair
+    /**
+     * Delete a repair.
+     */
     public function destroy($repairId)
     {
         Repair::destroy($repairId);

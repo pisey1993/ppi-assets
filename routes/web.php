@@ -14,10 +14,6 @@ use Illuminate\Http\Request;
 // --- Routes for the RepairController ---
 
 Route::get('/repairs/report/export', [RepairController::class, 'export'])->name('repairs.report.export');
-
-
-
-
 Route::get('/assets/report/export', function (Request $request) {
     $filters = $request->only([
         'name', 'status', 'department',

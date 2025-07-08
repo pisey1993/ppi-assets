@@ -10,7 +10,7 @@ class RepairsExport implements FromCollection, WithHeadings
 {
     protected $filters;
 
-    public function __construct(array $filters = [])
+    public function __construct($filters)
     {
         $this->filters = $filters;
     }
@@ -19,51 +19,43 @@ class RepairsExport implements FromCollection, WithHeadings
     {
         $query = Repair::query();
 
-        // Apply filters same as in controller
         if (!empty($this->filters['repair_date_from'])) {
             $query->whereDate('repair_date', '>=', $this->filters['repair_date_from']);
         }
+
         if (!empty($this->filters['repair_date_to'])) {
             $query->whereDate('repair_date', '<=', $this->filters['repair_date_to']);
         }
-        if (!empty($this->filters['issue'])) {
-            $query->where('issue', 'like', '%'.$this->filters['issue'].'%');
-        }
-        if (!empty($this->filters['repair_cost_min'])) {
-            $query->where('repair_cost', '>=', $this->filters['repair_cost_min']);
-        }
-        if (!empty($this->filters['repair_cost_max'])) {
-            $query->where('repair_cost', '<=', $this->filters['repair_cost_max']);
-        }
-        if (!empty($this->filters['status'])) {
-            $query->where('status', 'like', '%'.$this->filters['status'].'%');
-        }
-        if (!empty($this->filters['vendor'])) {
-            $query->where('vendor', 'like', '%'.$this->filters['vendor'].'%');
-        }
-        if (!empty($this->filters['remarks'])) {
-            $query->where('remarks', 'like', '%'.$this->filters['remarks'].'%');
-        }
 
-        return $query->orderBy('repair_date', 'desc')->get([
+        // Add other filters similarly...
+
+        return $query->get([
+            'id',
+            'asset_id',
             'repair_date',
             'issue',
-            'status',
             'repair_cost',
+            'status',
             'vendor',
-            'remarks'
+            'remarks',
+            'created_at',
+            'updated_at',
         ]);
     }
 
     public function headings(): array
     {
         return [
+            'ID',
+            'Asset ID',
             'Repair Date',
             'Issue',
-            'Status',
             'Repair Cost',
+            'Status',
             'Vendor',
             'Remarks',
+            'Created At',
+            'Updated At',
         ];
     }
 }
