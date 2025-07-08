@@ -72,7 +72,39 @@ const submit = () => {
         },
     });
 };
-;
+import { router } from '@inertiajs/vue3';
+
+function Prev() {
+    if (!props.asset?.id) {
+        console.error('Asset ID is missing. Cannot redirect.');
+        return;
+    }
+
+    const targetId = props.asset.id - 1;
+
+    if (targetId <= 0) {
+        console.error('Invalid target asset ID.');
+        return;
+    }
+
+    router.visit(`/assets/${targetId}/edit`);
+}
+function Next() {
+    if (!props.asset?.id) {
+        console.error('Asset ID is missing. Cannot redirect.');
+        return;
+    }
+
+    const targetId = props.asset.id + 1;
+
+    if (targetId <= 0) {
+        console.error('Invalid target asset ID.');
+        return;
+    }
+
+    router.visit(`/assets/${targetId}/edit`);
+}
+
 </script>
 
 <template>
@@ -239,7 +271,7 @@ const submit = () => {
                             <div>
                                 <button
                                     v-if="previous_id"
-                                    @click="$inertia.visit(`/assets/${previous_id}/edit`)"
+                                    @click="Prev"
                                     type="button"
                                     class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded mr-2"
                                 >
@@ -248,12 +280,30 @@ const submit = () => {
 
                                 <button
                                     v-if="next_id"
-                                    @click="$inertia.visit(`/assets/${next_id}/edit`)"
+                                    @click="Next"
                                     type="button"
                                     class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
                                 >
                                     Next →
                                 </button>
+
+<!--                                <button-->
+<!--                                    v-if="previous_id"-->
+<!--                                    @click="$inertia.visit(`/assets/${previous_id}/edit`)"-->
+<!--                                    type="button"-->
+<!--                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded mr-2"-->
+<!--                                >-->
+<!--                                    ← Previous-->
+<!--                                </button>-->
+
+<!--                                <button-->
+<!--                                    v-if="next_id"-->
+<!--                                    @click="$inertia.visit(`/assets/${next_id}/edit`)"-->
+<!--                                    type="button"-->
+<!--                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"-->
+<!--                                >-->
+<!--                                    Next →-->
+<!--                                </button>-->
                             </div>
 
                             <button

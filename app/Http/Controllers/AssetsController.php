@@ -13,6 +13,7 @@ use App\Models\AssetTransfer;
 
 class AssetsController extends Controller
 {
+
     public function report(Request $request)
     {
         $query = Assets::with(['category', 'assignedUser', 'currentLocation'])
@@ -127,12 +128,23 @@ class AssetsController extends Controller
     }
 
 
+    protected function getNextAssetId($currentId)
+    {
+        return Assets::where('id', '>', $currentId)
+            ->orderBy('id', 'asc')
+            ->value('id');
+    }
+
+    protected function getPreviousAssetId($currentId)
+    {
+        return Assets::where('id', '<', $currentId)
+            ->orderBy('id', 'desc')
+            ->value('id');
+    }
+
     public function edit($id)
     {
         $asset = Assets::with(['category', 'transfers', 'repairs', 'assignedUser', 'currentLocation'])->findOrFail($id);
-
-        $next = Assets::where('id', '>', $id)->orderBy('id')->first();
-        $previous = Assets::where('id', '<', $id)->orderByDesc('id')->first();
 
         return Inertia::render('Assets/Edit', [
             'asset' => $asset,
@@ -141,10 +153,15 @@ class AssetsController extends Controller
             'locations' => Locations::all(),
             'categories' => Categories::all(),
             'transfers' => $asset->transfers,
-            'next_id' => $next?->id,
-            'previous_id' => $previous?->id,
+            'next_id' => $this->getNextAssetId($id),
+            'previous_id' => $this->getPreviousAssetId($id),
+            'routes' => [
+                'asset_edit' => url('/assets'),
+            ],
         ]);
     }
+
+
 
     public function update(Request $request, Assets $asset)
     {
