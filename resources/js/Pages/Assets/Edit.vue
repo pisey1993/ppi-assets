@@ -87,7 +87,8 @@ function Prev() {
         return;
     }
 
-    router.visit(`/assets/${targetId}/edit`);
+    // router.visit(`/assets/${targetId}/edit`);
+    router.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/edit`);
 }
 function Next() {
     if (!props.asset?.id) {
@@ -102,7 +103,8 @@ function Next() {
         return;
     }
 
-    router.visit(`/assets/${targetId}/edit`);
+    // router.visit(`/assets/${targetId}/edit`);
+    router.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/edit`);
 }
 
 </script>
