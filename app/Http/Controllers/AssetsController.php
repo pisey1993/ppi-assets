@@ -56,7 +56,7 @@ class AssetsController extends Controller
                 'name', 'status', 'department',
                 'purchase_date_from', 'purchase_date_to', 'purchase_age', 'show_all',
             ]),
-            'statuses' => ['available', 'assigned', 'repair', 'retired'],
+            'statuses' => ['In Stock', 'Using', 'Repair', 'Broken'],
             'departments' => Locations::select('name')->distinct()->pluck('name'),
         ]);
     }

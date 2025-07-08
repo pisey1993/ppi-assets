@@ -235,10 +235,11 @@ const printTransfer = (transferId) => {
                     <label class="block mb-1 text-sm font-medium text-gray-700">User Status</label>
                     <select v-model="form.user_status" class="border p-2 rounded w-full">
                         <option disabled value="">-- Select Status --</option>
-                        <option value="available">Available</option>
-                        <option value="assigned">Assigned</option>
-                        <option value="repair">Repair</option>
-                        <option value="retired">Retired</option>
+                        <option value="Transfer">Transfer</option>
+                        <option value="Replace">Replace</option>
+                        <option value="Repair">Repair</option>
+                        <option value="Resign">Resign</option>
+                        <option value="In Stock">In Stock</option>
                     </select>
                 </div>
                 <div class="md:col-span-2">

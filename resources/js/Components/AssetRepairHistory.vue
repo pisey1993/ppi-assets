@@ -77,8 +77,15 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Status</label>
-                            <input type="text" v-model="form.status" class="mt-1 w-full rounded border-gray-300">
+                            <select v-model="form.status" class="mt-1 w-full rounded border-gray-300">
+                                <option disabled value="">-- Select Status --</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
                         </div>
+
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium">Issue</label>
                             <textarea v-model="form.issue" class="mt-1 w-full rounded border-gray-300"></textarea>

@@ -76,8 +76,15 @@
                 </div>
                 <div>
                     <label for="status" class="block text-sm font-medium text-slate-700">Status</label>
-                    <input type="text" id="status" name="status" value="{{ $filters['status'] ?? '' }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" placeholder="Completed, Pending..." />
+                    <select id="status" name="status" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        <option value="">All Statuses</option>
+                        <option value="Completed" {{ ($filters['status'] ?? '') == 'Completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="Pending" {{ ($filters['status'] ?? '') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="In Progress" {{ ($filters['status'] ?? '') == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                        <option value="Cancelled" {{ ($filters['status'] ?? '') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    </select>
                 </div>
+
                 <div>
                     <label for="vendor" class="block text-sm font-medium text-slate-700">Vendor</label>
                     <input type="text" id="vendor" name="vendor" value="{{ $filters['vendor'] ?? '' }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" placeholder="Tech Solutions Inc." />
