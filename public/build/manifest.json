@@ -300,7 +300,7 @@
     "name": "vue"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Dbm3SPfR.css",
+    "file": "assets/app-BoO3FZvQ.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -388,7 +388,7 @@
     ]
   },
   "resources/js/Pages/Assets/Edit.vue": {
-    "file": "assets/Edit-CT3ydrJt.js",
+    "file": "assets/Edit-_EWpfaCe.js",
     "name": "Edit",
     "src": "resources/js/Pages/Assets/Edit.vue",
     "isDynamicEntry": true,
@@ -432,12 +432,12 @@
       "_@floating-ui-58V2siOx.js"
     ],
     "css": [
-      "assets/Edit-BX_LM8Za.css",
+      "assets/Edit-Bcr874wL.css",
       "assets/AssetTransferHistory-BVPBNAi5.css"
     ]
   },
   "resources/js/Pages/Assets/Index.vue": {
-    "file": "assets/Index-BLl2HfSK.js",
+    "file": "assets/Index-6Iexzpje.js",
     "name": "Index",
     "src": "resources/js/Pages/Assets/Index.vue",
     "isDynamicEntry": true,
@@ -468,6 +468,43 @@
       "_side-channel-weakmap-DX1yI3_3.js",
       "_axios-Dq7h7Pqt.js",
       "_es-toolkit-ZL5LOC3a.js"
+    ]
+  },
+  "resources/js/Pages/Assets/PrintAsset.vue": {
+    "file": "assets/PrintAsset-D5RseRON.js",
+    "name": "PrintAsset",
+    "src": "resources/js/Pages/Assets/PrintAsset.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_@inertiajs-D9ccuREh.js",
+      "_AuthenticatedLayout-6LMTbTnN.js",
+      "_@vue-LNHlAw4_.js",
+      "_qs-C8tfub6U.js",
+      "_side-channel-BXGaktkh.js",
+      "_es-errors-CxTyLFAO.js",
+      "_object-inspect-B2kaAiJw.js",
+      "_call-bind-apply-helpers-CQfT9Tu8.js",
+      "_function-bind-CHqF18-c.js",
+      "_side-channel-list-C072adVV.js",
+      "_side-channel-map-Dinhkeln.js",
+      "_get-intrinsic-lZBJyQCA.js",
+      "_es-object-atoms-BR76m4z7.js",
+      "_math-intrinsics-DP1tGiab.js",
+      "_gopd-C1lCZ5Qs.js",
+      "_es-define-property-D_7cP-M3.js",
+      "_has-symbols-BaUvM3gb.js",
+      "_get-proto-CF5Vu79P.js",
+      "_dunder-proto-BtQF2sE7.js",
+      "_hasown-DwiY0sux.js",
+      "_call-bound-D-DBEejZ.js",
+      "_side-channel-weakmap-DX1yI3_3.js",
+      "_axios-Dq7h7Pqt.js",
+      "_es-toolkit-ZL5LOC3a.js",
+      "_ApplicationLogo-C39zdf7U.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/PrintAsset-D__3f_Ji.css"
     ]
   },
   "resources/js/Pages/Assets/Report.vue": {
@@ -957,7 +994,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-DG6Z8a73.js",
+    "file": "assets/app-CSVGrWuX.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -1003,6 +1040,7 @@
       "resources/js/Pages/Assets/Create.vue",
       "resources/js/Pages/Assets/Edit.vue",
       "resources/js/Pages/Assets/Index.vue",
+      "resources/js/Pages/Assets/PrintAsset.vue",
       "resources/js/Pages/Assets/Report.vue",
       "resources/js/Pages/Auth/ConfirmPassword.vue",
       "resources/js/Pages/Auth/ForgotPassword.vue",
@@ -1019,7 +1057,7 @@
       "resources/js/Pages/Welcome.vue"
     ],
     "css": [
-      "assets/app-Dbm3SPfR.css"
+      "assets/app-BoO3FZvQ.css"
     ]
   }
 }

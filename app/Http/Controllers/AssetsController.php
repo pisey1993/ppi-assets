@@ -9,10 +9,22 @@ use App\Models\Locations;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\AssetTransfer;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 
 class AssetsController extends Controller
 {
+    public function print(Assets $asset)
+    {
+        return Inertia::render('Assets/PrintAsset', [
+            'asset' => $asset,
+            'category' => $asset->category,
+            'assigned_user' => $asset->assignedToUser,
+            'location' => $asset->currentLocation,
+        ]);
+    }
+
 
     public function report(Request $request)
     {

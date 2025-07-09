@@ -88,12 +88,12 @@ const deleteAsset = (id) => {
                             <td class="px-4 py-2">{{ asset.remark }}</td>
                             <td class="px-4 py-2">{{ asset.status }}</td>
                             <td class="px-4 py-2 space-x-2 whitespace-nowrap">
-                                <a
-                                    :href="`${appUrl}/assets/${asset.id}`"
-                                    class="text-green-600 hover:text-green-800 text-sm"
-                                >
-                                    View
-                                </a>
+<!--                                <a-->
+<!--                                    :href="`${appUrl}/assets/${asset.id}`"-->
+<!--                                    class="text-green-600 hover:text-green-800 text-sm"-->
+<!--                                >-->
+<!--                                    View-->
+<!--                                </a>-->
                                 <a
                                     :href="`${appUrl}/assets/${asset.id}/edit`"
                                     class="text-indigo-600 hover:text-indigo-800 text-sm"
