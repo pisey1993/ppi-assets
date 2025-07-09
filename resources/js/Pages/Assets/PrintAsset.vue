@@ -1,6 +1,6 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+
 
 const props = defineProps({
     asset: Object,
@@ -12,7 +12,7 @@ const props = defineProps({
 
 <template>
     <Head :title="`Print Asset: ${asset.asset_code}`" />
-    <AuthenticatedLayout>
+
         <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow print:shadow-none print:p-0 print:rounded-none">
             <!-- Company Header -->
             <div class="text-center mb-6 border-b pb-4">
@@ -103,7 +103,7 @@ const props = defineProps({
                 Printed on: {{ new Date().toLocaleString() }}
             </div>
         </div>
-    </AuthenticatedLayout>
+
 </template>
 
 <style>
