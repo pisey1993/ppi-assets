@@ -95,11 +95,12 @@ const deleteAsset = (id) => {
 <!--                                    View-->
 <!--                                </a>-->
                                 <a
-                                    :href="`assets/${asset.id}/edit`"
+                                    :href="'assets/' + asset.id + '/edit'"
                                     class="text-indigo-600 hover:text-indigo-800 text-sm"
                                 >
                                     Edit
                                 </a>
+
                                 <button
                                     @click="deleteAsset(asset.id)"
                                     class="text-red-600 hover:text-red-800 text-sm"
