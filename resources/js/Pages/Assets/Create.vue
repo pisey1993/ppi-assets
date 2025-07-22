@@ -38,11 +38,20 @@ const submit = () => {
             // optional: reset form or give feedback
             // form.reset();
         },
-        onError: () => {
-            // optional: handle error
+        onError: (errors) => {
+            // Handle form validation errors
+            console.error('Form submission error:', errors);
+
+            // Optionally display errors in the UI
+            // e.g., loop through errors and show them under fields
+            Object.entries(errors).forEach(([field, message]) => {
+                // This assumes you have a way to display messages per field
+                alert(`${field}: ${message}`);
+            });
         },
     });
 };
+
 </script>
 
 <template>
@@ -126,14 +135,22 @@ const submit = () => {
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">User Status</label>
-                            <select v-model="form.status" class="border p-2 rounded w-full">
+                            <select
+                                v-model="form.status"
+                                class="border p-2 rounded w-full"
+                                :class="{ 'border-red-500': form.errors.status }"
+                            >
                                 <option disabled value="">-- Select User Status --</option>
                                 <option value="instock">In Stock</option>
                                 <option value="using">Using</option>
                                 <option value="repair">Repair</option>
                                 <option value="broken">Broken</option>
                             </select>
+                            <p v-if="form.errors.status" class="text-red-500 text-sm mt-1">
+                                {{ form.errors.status }}
+                            </p>
                         </div>
+
 
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700">Location</label>
@@ -160,10 +177,6 @@ const submit = () => {
                             </el-select>
                         </div>
 
-                        <div class="md:col-span-3">
-                            <label class="block mb-1 text-sm font-medium text-gray-700">Notes</label>
-                            <textarea v-model="form.notes" placeholder="Notes" class="border p-2 rounded w-full"></textarea>
-                        </div>
                         <div class="md:col-span-3">
                             <label class="block mb-1 text-sm font-medium text-gray-700">Notes</label>
                             <textarea v-model="form.notes" placeholder="Notes" class="border p-2 rounded w-full"></textarea>

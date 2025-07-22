@@ -95,7 +95,7 @@ const deleteAsset = (id) => {
 <!--                                    View-->
 <!--                                </a>-->
                                 <a
-                                    :href="`${appUrl}/assets/${asset.id}/edit`"
+                                    :href="`assets/${asset.id}/edit`"
                                     class="text-indigo-600 hover:text-indigo-800 text-sm"
                                 >
                                     Edit
