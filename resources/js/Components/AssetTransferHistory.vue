@@ -117,7 +117,6 @@ const executeDelete = () => {
 // Function to print a specific transfer record
 const printTransfer = (transferId) => {
     const fullUrl = `/asset-transfers/${transferId}/print`;
-    // const fullUrl = `/asset-transfers/${transferId}/print`;
     window.open(fullUrl, '_blank');
 };
 
