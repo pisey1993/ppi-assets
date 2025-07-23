@@ -93,7 +93,7 @@ function Prev() {
     }
 
     console.log('prev', targetId);
-    router.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/edit`);
+    router.visit(`/assets/${targetId}/edit`);
 }
 function Next() {
     if (!props.asset?.id) {
@@ -108,7 +108,7 @@ function Next() {
         return;
     }
     console.log('next', targetId);
-    router.visit(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/edit`);
+    router.visit(`/assets/${targetId}/edit`);
 }
 function Print() {
     if (!props.asset?.id) {
@@ -121,7 +121,7 @@ function Print() {
     console.log('printing asset', targetId);
 
     // Open the print page in a new browser tab
-    window.open(`assets/${targetId}/print`, '_blank');
+    window.open(`/assets/${targetId}/print`, '_blank');
 }
 
 
