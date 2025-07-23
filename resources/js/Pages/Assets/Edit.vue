@@ -80,36 +80,25 @@ const submit = () => {
 import { router } from '@inertiajs/vue3';
 
 function Prev() {
-    if (!props.asset?.id) {
-        console.error('Asset ID is missing. Cannot redirect.');
+    if (!props.previous_id) {
+        console.warn('No previous asset ID available.');
         return;
     }
 
-    const targetId = props.asset.id - 1;
-
-    if (targetId <= 0) {
-        console.error('Invalid target asset ID.');
-        return;
-    }
-
-    console.log('prev', targetId);
-    router.visit(`/assets/${targetId}/edit`);
+    console.log('prev', props.previous_id);
+    router.visit(`/assets/${props.previous_id}/edit`);
 }
+
 function Next() {
-    if (!props.asset?.id) {
-        console.error('Asset ID is missing. Cannot redirect.');
+    if (!props.next_id) {
+        console.warn('No next asset ID available.');
         return;
     }
 
-    const targetId = props.asset.id + 1;
-
-    if (targetId <= 0) {
-        console.error('Invalid target asset ID.');
-        return;
-    }
-    console.log('next', targetId);
-    router.visit(`/assets/${targetId}/edit`);
+    console.log('next', props.next_id);
+    router.visit(`/assets/${props.next_id}/edit`);
 }
+
 function Print() {
     if (!props.asset?.id) {
         console.error('Asset ID is missing. Cannot redirect.');
