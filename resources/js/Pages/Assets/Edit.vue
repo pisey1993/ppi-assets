@@ -121,7 +121,7 @@ function Print() {
     console.log('printing asset', targetId);
 
     // Open the print page in a new browser tab
-    window.open(`https://www.peoplenpartners.com/public/ppi-asset/public/assets/${targetId}/print`, '_blank');
+    window.open(`assets/${targetId}/print`, '_blank');
 }
 
 
