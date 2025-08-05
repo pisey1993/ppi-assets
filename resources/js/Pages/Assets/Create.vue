@@ -133,23 +133,23 @@ const submit = () => {
                             <input v-model="form.warranty_expiry" type="date" class="border p-2 rounded w-full" />
                         </div>
 
-                        <div>
-                            <label class="block mb-1 text-sm font-medium text-gray-700">User Status</label>
-                            <select
-                                v-model="form.status"
-                                class="border p-2 rounded w-full"
-                                :class="{ 'border-red-500': form.errors.status }"
-                            >
-                                <option disabled value="">-- Select User Status --</option>
-                                <option value="instock">In Stock</option>
-                                <option value="using">Using</option>
-                                <option value="repair">Repair</option>
-                                <option value="broken">Broken</option>
-                            </select>
-                            <p v-if="form.errors.status" class="text-red-500 text-sm mt-1">
-                                {{ form.errors.status }}
-                            </p>
-                        </div>
+<!--                        <div>-->
+<!--                            <label class="block mb-1 text-sm font-medium text-gray-700">User Status</label>-->
+<!--                            <select-->
+<!--                                v-model="form.status"-->
+<!--                                class="border p-2 rounded w-full"-->
+<!--                                :class="{ 'border-red-500': form.errors.status }"-->
+<!--                            >-->
+<!--                                <option disabled value="">&#45;&#45; Select User Status &#45;&#45;</option>-->
+<!--                                <option value="instock">In Stock</option>-->
+<!--                                <option value="using">Using</option>-->
+<!--                                <option value="repair">Repair</option>-->
+<!--                                <option value="broken">Broken</option>-->
+<!--                            </select>-->
+<!--                            <p v-if="form.errors.status" class="text-red-500 text-sm mt-1">-->
+<!--                                {{ form.errors.status }}-->
+<!--                            </p>-->
+<!--                        </div>-->
 
 
                         <div>
